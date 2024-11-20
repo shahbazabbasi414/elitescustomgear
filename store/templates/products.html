@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load cart %}
+{% load custom_filter %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+  <div class="row">
+    <!-- Filter -->
+    <div class="col-lg-3">
+      <div class="sidebar">
+        <button class="btn btn-primary1 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#filterMenu" aria-expanded="false" aria-controls="filterMenu">
+          Filter Products
+        </button>
+        <div class="collapse d-lg-block" id="filterMenu">
+          <div class="list-group">
+            {% for category in Categories %}
+            <div class="category-container">
+                <a href="{% if category.get_children.count > 0 %}javascript:void(0);{% else %}{% url 'products' %}?category={{ category.id }}{% endif %}" class="list-group-item list-group-item-action">
+                    {{ category.name }} 
+                    {% if category.get_children.count > 0 %}
+                    <span class="arrow">&#9660;</span> <!-- Down arrow -->
+                    {% endif %}
+                </a>
+                <div class="child-category">
+                    {% for child in category.get_children %}
+                    <div class="child-category-container">
+                        <a href="{% if child.get_children.count > 0 %}javascript:void(0);{% else %}{% url 'products' %}?category={{ child.id }}{% endif %}" class="list-group-item list-group-item-action">
+                            {{ child.name }} 
+                            {% if child.get_children.count > 0 %}
+                            <span class="arrow">&#9660;</span> <!-- Down arrow -->
+                            {% endif %}
+                        </a>
+                        <div class="subchild-category">
+                            {% for subchild in child.get_children %}
+                            <a href="{% url 'products' %}?category={{ subchild.id }}" class="list-group-item list-group-item-action">{{ subchild.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Filter -->
+    <div class="col-lg-9 mx-auto" id="product">
+      <div class="row mx-auto">
+        {% for product in products %}
+        <div class="card mx-auto mb-3" id="{{ product.id }}" style="width: 18rem;">
+          <a href="{% url 'cartPage' product.id %}" style="text-decoration: none; color: inherit;">
+            <img src="{{ product.image.url }}" alt="Product Image" style="width: 100%; height: auto;">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">{{ product.category }}</p>
+              <p class="card-text"><b>{{ product.price|currency }}</b></p>
+            </a>
+            {% comment %} <div class="card-footer p-0">
+              {% if product|is_in_cart:cart %}
+              <div class="row no-gutters d-flex align-items-center">
+                <form action="?category={{ request.GET.category }}#{{ product.id }}" method="POST" class="col-3 p-0 m-0">
+                  {% csrf_token %}
+                  <input type="hidden" name="product" value="{{ product.id }}">
+                  <input type="hidden" name="remove" value="{{ product.id }}">
+                  <button type="submit" class="btn btn-secondary w-100">-</button>
+                </form>
+                <div class="text-center col">
+                  {{ product|cart_quantity:request.session.cart }} in Cart
+                </div>
+                <form action="?category={{ request.GET.category }}#{{ product.id }}" method="POST" class="col-3 p-0 m-0">
+                  {% csrf_token %}
+                  <input type="hidden" name="product" value="{{ product.id }}">
+                  <button type="submit" class="btn btn-secondary w-100">+</button>
+                </form>
+              </div>
+              {% else %}
+              <form action="?category={{ request.GET.category }}#{{ product.id }}" method="POST" class="btn-block">
+                {% csrf_token %}
+                <input type="hidden" name="product" value="{{ product.id }}">
+                <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
+              </form>
+              {% endif %}
+            </div> {% endcomment %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% include "footer.html" %}
+{% endblock %}
