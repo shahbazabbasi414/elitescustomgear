@@ -7,10 +7,12 @@ from django.utils import timezone
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('Pending', 'Pending'),
+        ('Designing & Quotation', 'Designing & Quotation'),
+        ('Pending Customer Approval', 'Pending Customer Approval'),
+        ('Order Under Production', 'Order Under Production'),
         ('Dispatched', 'Dispatched'),
         ('Delivered', 'Delivered'),
-        ('Completed', 'Completed'),
+        
     ]
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -21,14 +23,15 @@ class Order(models.Model):
     address = models.CharField(max_length=50, default='', blank=True)
     phone = models.CharField(max_length=11, default='', blank=True)
     detail = models.CharField(max_length=500, default='', blank=True) 
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Designing & Quotation')
     color = models.CharField(max_length=50, blank=True, null=True)
     material = models.CharField(max_length=50, blank=True, null=True)
     size = models.CharField(max_length=50, blank=True, null=True)
     customization = models.CharField(max_length=50, blank=True, null=True)
     type = models.CharField(max_length=50, blank=True, null=True)
     gsm = models.CharField(max_length=50, blank=True, null=True)
-    
+    chosequantity  = models.CharField(max_length=50, blank=True, null=True)
+    fabric =models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return f'Order {self.id}: {self.product.name} by {self.customer}'

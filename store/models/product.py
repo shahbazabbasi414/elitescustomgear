@@ -7,6 +7,7 @@ from .type import Type
 from .color import Color
 from .fabric import Fabric
 from .gsm import GSM
+from .chosequantity import Chosequantity
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
@@ -20,6 +21,7 @@ class Product(models.Model):
     colors = models.ManyToManyField(Color, blank=True)
     fabrics = models.ManyToManyField(Fabric, blank=True)
     gsms = models.ManyToManyField(GSM, blank=True)
+    chosequantitys = models.ManyToManyField(Chosequantity, blank=True)
     
     description = models.CharField(max_length=1000, default='')
     image = models.ImageField(upload_to='products/')

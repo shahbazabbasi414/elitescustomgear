@@ -10,3 +10,4 @@ from .type import Type
 from .color import Color
 from .fabric import Fabric
 from .gsm import GSM
+from .chosequantity import Chosequantity

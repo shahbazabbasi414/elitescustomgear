@@ -166,7 +166,7 @@ def Cart(request):
     cart_items = []
     cart_total = 0  # Initialize total variable
     for key, quantity in cart.items():
-        product_id, color, material, size, customization, product_type, gsm = key.split('-')
+        product_id, color,fabric, material, size, customization, product_type, gsm, chosequantity = key.split('-')
         product = next((p for p in products if p.id == int(product_id)), None)
         if product:
             item_total = product.price * quantity  # Calculate total for this item
@@ -175,11 +175,13 @@ def Cart(request):
                 'product': product,
                 'quantity': quantity,
                 'color': color,
+                'fabric':fabric,
                 'material': material,
                 'size': size,
                 'customization': customization,
                 'type': product_type,
                 'gsm': gsm,
+                'chosequantity': chosequantity,
                 'item_total': item_total,  # Optionally store item total for each item
             })
     
@@ -230,7 +232,7 @@ class checkOut(View):
 
         # Extract product IDs and attributes from cart keys
         for key, quantity in cart.items():
-            product_id, color, material, size, customization, product_type, gsm = key.split('-')
+            product_id, color,fabric, material, size, customization, product_type, gsm, chosequantity = key.split('-')
             product = Product.objects.get(id=int(product_id))
 
             if quantity > 0:
@@ -243,11 +245,13 @@ class checkOut(View):
                     detail=detail,
                     quantity=quantity,
                     color=color,
+                    fabric=fabric,
                     material=material,
                     size=size,
                     customization=customization,
                     type=product_type,
                     gsm=gsm,
+                    chosequantity=chosequantity,
                 )
                 order.placeOrder()
 
@@ -321,7 +325,9 @@ def cartPage(request, product_id):
     customizations = product.customizations.all()
     types = product.types.all()
     colors = product.colors.all()
+    fabrics=product.fabrics.all()
     gsms = product.gsms.all()
+    chosequantitys=product.chosequantitys.all()
     
     cart = request.session.get('cart', {})
     categories = Category.get_all_category()
@@ -336,11 +342,13 @@ def cartPage(request, product_id):
         'Categories': parent_categories,
         'Customer': customer,
         'color':colors,
+        'fabric':fabrics,
         'material':materials,
         'size':sizes,
         'customization':customizations,
         'type':types,
-        'gsms':gsms
+        'gsms':gsms,
+        'chosequantity':chosequantitys
         
     })
 
@@ -362,14 +370,17 @@ def update_cart(request):
 
         # Extract additional product options from the form
         color = request.POST.get('color')
+        fabric = request.POST.get('fabric')
         material = request.POST.get('material')
         size = request.POST.get('size')
         customization = request.POST.get('customization')
         product_type = request.POST.get('type')
         gsm = request.POST.get('gsm')
+        chosequantity = request.POST.get('chosequantity')
+
 
         # Build a key to store product with options
-        product_key = f"{product_id}-{color or ''}-{material or ''}-{size or ''}-{customization or ''}-{product_type or ''}-{gsm or ''}"
+        product_key = f"{product_id}-{color or ''}-{fabric or ''}-{material or ''}-{size or ''}-{customization or ''}-{product_type or ''}-{gsm or ''}-{chosequantity or ''}"
 
         # Remove the product from cart if `remove` is provided
         if remove:

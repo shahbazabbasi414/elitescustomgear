@@ -54,7 +54,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ product.name }}</h5>
               <p class="card-text">{{ product.category }}</p>
-              <p class="card-text"><b>{{ product.price|currency }}</b></p>
+              {% comment %} <p class="card-text"><b>{{ product.price|currency }}</b></p> {% endcomment %}
             </a>
             {% comment %} <div class="card-footer p-0">
               {% if product|is_in_cart:cart %}

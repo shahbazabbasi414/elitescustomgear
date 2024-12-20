@@ -11,6 +11,7 @@ from .models.type import Type
 from .models.color import Color
 from .models.fabric import Fabric
 from .models.gsm import GSM
+from .models.chosequantity import Chosequantity
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent')
@@ -23,8 +24,8 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'category', 'description', 'image')
-    search_fields = ('name', 'description')
-    filter_horizontal = ('materials', 'sizes', 'customizations', 'types', 'colors', 'fabrics', 'gsms')
+    search_fields = ('name', 'description''chosequantity',)
+    filter_horizontal = ('materials', 'sizes', 'customizations', 'types', 'colors', 'fabrics', 'gsms','chosequantitys',)
 
 
 @admin.register(Category)
@@ -54,3 +55,4 @@ admin.site.register(Type)
 admin.site.register(Color)
 admin.site.register(Fabric)
 admin.site.register(GSM)
+admin.site.register(Chosequantity)

@@ -5,19 +5,111 @@
 {% block content %}
 <style>
   .carousel-inner img {
-    height: 100vh; 
-    {% comment %} object-fit: cover;  {% endcomment %}
-  }
+    height: 90vh; 
+    object-fit: cover;
+  } 
   .product-card img {
     width: 100%;
     object-fit: cover;
   }
+  {% comment %} .carousel-inner img {
+    width: 100%;
+    height: auto; /* Ensures images scale proportionally */
+    object-fit: cover;
+  } {% endcomment %}
 
+  .carousel-indicators {
+    bottom: 10px; /* Adjust indicators for smaller screens */
+  }
+
+  /* About Section */
+  #about {
+    padding: 20px;
+  }
+
+  #about h2 {
+    font-size: 1.8rem;
+  }
+
+  #about h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  #about p,
+  #about ul {
+    font-size: 1rem;
+  }
+
+  #about ul li {
+    margin-bottom: 10px;
+  }
+
+  /* Our Process Section */
+  #features .section-title h2 {
+    font-size: 1.8rem;
+  }
+
+  .features .row {
+    flex-wrap: wrap;
+  }
+
+  .features .nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .features .tab-pane img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Mobile Adjustments */
+  @media (max-width: 768px) {
+    .carousel-inner img {
+      height: 60vh; /* Reduce carousel height on smaller screens */
+    }
+
+    #about h2 {
+      font-size: 1.5rem;
+    }
+
+    #about h3 {
+      font-size: 1rem;
+    }
+
+    #about p,
+    #about ul {
+      font-size: 0.9rem;
+    }
+
+    #features .section-title h2 {
+      font-size: 1.5rem;
+    }
+
+    .features .nav-tabs {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .features .tab-pane img {
+      margin: 10px 0;
+    }
+
+    .features .tab-pane p {
+      font-size: 0.9rem;
+    }
+  }
 
 </style>
 
 <!-- Carousel Section -->
+ <meta name="viewport" content="width=device-width, initial-scale=1">
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <!-- Indicators -->
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -26,30 +118,45 @@
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6" aria-label="Slide 7"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="7" aria-label="Slide 8"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="8" aria-label="Slide 9"></button>
   </div>
+
+  <!-- Carousel Images -->
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="{% static 'images/slide/Banner 1.jpg' %}" class="d-block w-100" alt="Slider Image 1">
+      <img src="{% static 'images/slide/Banner 1.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 1">
     </div>
     <div class="carousel-item">
-      <img src="{% static 'images/slide/Banner 2.jpg' %}" class="d-block w-100" alt="Slider Image 2">
+      <img src="{% static 'images/slide/Banner 2.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 2">
     </div>
     <div class="carousel-item">
-      <img src="{% static 'images/slide/Banner 3.jpg' %}" class="d-block w-100" alt="Slider Image 3">
+      <img src="{% static 'images/slide/Banner 3.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 3">
     </div>
     <div class="carousel-item">
-      <img src="{% static 'images/slide/Banner 4.jpg' %}" class="d-block w-100" alt="Slider Image 4">
+      <img src="{% static 'images/slide/Banner 4.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 4">
     </div>
     <div class="carousel-item">
-      <img src="{% static 'images/slide/Banner 5.jpg' %}" class="d-block w-100" alt="Slider Image 5">
+      <img src="{% static 'images/slide/Banner 5.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 5">
     </div>
     <div class="carousel-item">
-      <img src="{% static 'images/slide/Banner 7.jpg' %}" class="d-block w-100" alt="Slider Image 7">
+      <img src="{% static 'images/slide/Banner 6.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 6">
     </div>
     <div class="carousel-item">
-      <img src="{% static 'images/slide/Banner 8.jpg' %}" class="d-block w-100" alt="Slider Image 8">
+      <img src="{% static 'images/slide/Banner 7.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 7">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/slide/Banner 8.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 8">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/slide/Banner 9.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 9">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/slide/Banner 10.jpg' %}" class="d-block w-100 img-fluid" alt="Slider Image 10">
     </div>
   </div>
+
+  <!-- Controls -->
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
@@ -64,6 +171,7 @@
 
 
 
+
 <!-- ======= About Section ======= -->
 <section id="about" class="mt-5 about">
   <div class="container">
@@ -71,21 +179,21 @@
     <div class="row content">
       <div class="col-lg-6">
         <h2>About Us</h2>
-        <h3>Welcome to Zealous, your dedicated partner in customizing top-tier martial arts protective gear, training equipment and sports apparel. </h3>
+        <h3>Welcome to Elites Custom Gear, your dedicated partner in customizing top-tier martial arts protective gear, training equipment and sports apparel. </h3>
       </div>
       <div class="col-lg-6 pt-4 pt-lg-0">
         <p>
-          At Zealous, we're driven by a passion for excellence and a commitment to empowering our clients with premium-quality equipment tailored to their unique needs.<br>
-          Zealous Sports combines years of industry experience with a relentless pursuit of innovation. We understand the pivotal role that high-quality gear plays in enhancing performance, ensuring safety, and fostering confidence in every athlete's journey.
+          At Elites Custom Gear, we're driven by a passion for excellence and a commitment to empowering our clients with premium-quality equipment tailored to their unique needs.<br>
+          Elites Custom Gear Sports combines years of industry experience with a relentless pursuit of innovation. We understand the pivotal role that high-quality gear plays in enhancing performance, ensuring safety, and fostering confidence in every athlete's journey.
           What sets us apart is our unwavering dedication to craftsmanship and customization. We meticulously design and produce protective gear and sportswear that not only meets but exceeds industry standards. Each product is crafted with precision, utilizing cutting-edge materials and technologies to deliver maximum comfort, durability, and performance.
           
         </p>
         <ul>
-          <li><i class="ri-check-double-line"></i>At Zealous, we believe in fostering a community where dedication, resilience, and passion for sports thrive. Our goal is not just to provide exceptional gear but to be a reliable partner in your journey toward achieving your goals.</li>
-          <li><i class="ri-check-double-line"></i> Join us in embracing excellence, pushing boundaries, and elevating your performance with gear that's as zealous about your success as you are.</li>
+          <li><i class="ri-check-double-line"></i>At Elites Custom Gear, we believe in fostering a community where dedication, resilience, and passion for sports thrive. Our goal is not just to provide exceptional gear but to be a reliable partner in your journey toward achieving your goals.</li>
+          <li><i class="ri-check-double-line"></i> Join us in embracing excellence, pushing boundaries, and elevating your performance with gear that's as Elites Custom Gear about your success as you are.</li>
         </ul>
         <p class="fst-italic">
-          Welcome to Zealous Sports - Where Your Passion Meets Precision.
+          Welcome to Elites Custom Gear Sports - Where Your Passion Meets Precision.
         </p>
       </div>
     </div>
@@ -220,7 +328,7 @@
                 <div class="row">
                   <div class="col-lg-8 details order-2 order-lg-1">
                     <h3>Customer Support</h3>
-                    <p class="fst-italic">Even after your order has been delivered, our commitment to you doesn't end there. Our dedicated customer support team is available to assist with any questions, concerns, or feedback you may have. Whether you need guidance on product usage, require after-sales service, or have suggestions for improvement, we are here to help. This step ensures that you are completely satisfied with your experience and that any issues are promptly addressed. At Zealous, we believe in building lasting relationships with our customers, and our customer support is always just a call or message away to ensure your ongoing satisfaction.</p>
+                    <p class="fst-italic">Even after your order has been delivered, our commitment to you doesn't end there. Our dedicated customer support team is available to assist with any questions, concerns, or feedback you may have. Whether you need guidance on product usage, require after-sales service, or have suggestions for improvement, we are here to help. This step ensures that you are completely satisfied with your experience and that any issues are promptly addressed. At Elites Custom Gear, we believe in building lasting relationships with our customers, and our customer support is always just a call or message away to ensure your ongoing satisfaction.</p>
                   </div>
                   <div class="col-lg-4 text-center order-1 order-lg-2">
                     <img src="{% static 'images/process/Processs-07.png' %}" alt="" class="img-fluid">
