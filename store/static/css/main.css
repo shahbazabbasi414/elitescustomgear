@@ -330,7 +330,7 @@ body.active-menu {
 .category-card {
   font-weight: bold;
   width: 18rem;
-  background-color: rgb(189, 0, 0);
+  background-color: rgb(255, 255, 255);
 }
 
 .category-text {

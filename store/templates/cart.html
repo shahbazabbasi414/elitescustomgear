@@ -15,10 +15,10 @@
             <th scope="col">S No</th>
             <th scope="col">Image</th>
             <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
+            {% comment %} <th scope="col">Price</th> {% endcomment %}
+            {% comment %} <th scope="col">Quantity</th> {% endcomment %}
             <th scope="col">Detail</th>
-            <th scope="col">Total</th>
+            {% comment %} <th scope="col">Total</th> {% endcomment %}
             <th scope="col">Action</th> <!-- New Action column -->
           </tr>
         </thead>
@@ -30,8 +30,8 @@
               <td>{{ forloop.counter }}</td>
               <td><img style="height: 50px;" class="rounded-circle" src="{{ item.product.image.url }}" alt=""></td>
               <td>{{ item.product.name }}</td>
-              <td>{{ item.product.price | currency }}</td>
-              <td>{{ item.quantity }}</td>
+              {% comment %} <td>{{ item.product.price | currency }}</td> {% endcomment %}
+              {% comment %} <td>{{ item.quantity }}</td> {% endcomment %}
         
               <td>
                 {% if item.color or item.fabric or item.material or item.size or item.customization or item.type or item.gsm or item.chosequantity  %}
@@ -48,7 +48,7 @@
                 {% endif %}
               </td>
         
-              <td>{{ item.quantity|multiply:item.product.price|currency }}</td>
+              {% comment %} <td>{{ item.quantity|multiply:item.product.price|currency }}</td> {% endcomment %}
               
               <!-- Action column for deleting the specific item -->
               <td>
@@ -77,11 +77,11 @@
         </tbody>
 
         {% if cart_total %}
-        <tfoot>
+        {% comment %} <tfoot>
           <tr>
             <th class="text-center" colspan="12">Total: {{ cart_total | currency }}</th>
           </tr>
-        </tfoot>
+        </tfoot> {% endcomment %}
         {% endif %}
       </table>
       <hr>

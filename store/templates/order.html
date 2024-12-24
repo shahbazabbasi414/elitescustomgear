@@ -13,12 +13,13 @@
         <thead>
           <tr>
             <th scope="col">S No</th>
+            <th scope="col">Order Number</th> 
             <th scope="col">Image</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
+            <th scope="col">Product Name</th> 
+            {% comment %} <th scope="col">Price</th> {% endcomment %}
             <th scope="col">Date</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Total</th>
+            {% comment %} <th scope="col">Quantity</th> {% endcomment %}
+            {% comment %} <th scope="col">Total</th> {% endcomment %}
             <th scope="col">Status</th>
           </tr>
         </thead>
@@ -26,12 +27,13 @@
           {% for order in orders %}
           <tr>
             <td>{{ forloop.counter }}</td>
+            <td>{{ order.id }}</td>
             <td><img style="height: 50px;" class="rounded-circle" src="{{ order.product.image.url }}" alt=""></td>
             <td>{{ order.product.name }}</td>
-            <td>{{ order.product.price|currency }}</td>
+            {% comment %} <td>{{ order.product.price|currency }}</td> {% endcomment %}
             <td>{{ order.date }}</td>
-            <td>{{ order.quantity }}</td>
-            <td>{{ order.quantity|multiply:order.product.price|currency }}</td>
+            {% comment %} <td>{{ order.quantity }}</td> {% endcomment %}
+            {% comment %} <td>{{ order.quantity|multiply:order.product.price|currency }}</td> {% endcomment %}
             <td>
               <span class="badge 
               {% if order.status == 'Designing & Quotation' %}
