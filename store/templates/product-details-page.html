@@ -167,7 +167,11 @@
             </div>
             <div>
                 <h3 class="mt-4 mb-4">Product Detail</h3>
-                <p class="lead">{{ product.description }}</p>
+                <p class="lead">
+                    {% for line in product.description.splitlines %}
+                        <span>{{ line }}</span><br>
+                    {% endfor %}
+                </p>
             </div>
         </div>
     </div>

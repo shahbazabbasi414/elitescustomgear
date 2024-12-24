@@ -23,13 +23,15 @@ class Product(models.Model):
     gsms = models.ManyToManyField(GSM, blank=True)
     chosequantitys = models.ManyToManyField(Chosequantity, blank=True)
     
-    description = models.CharField(max_length=1000, default='')
+    description = models.TextField(default='', blank=True)
     image = models.ImageField(upload_to='products/')
     image2 = models.ImageField(upload_to='products/', null=True, blank=True)
     image3 = models.ImageField(upload_to='products/', null=True, blank=True)
     
     def __str__(self):
         return self.name 
+    def __str__(self):
+        return self.description
     
     @staticmethod
     def get_Products_by_id(ids):
