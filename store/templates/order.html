@@ -29,7 +29,8 @@
             <td>{{ forloop.counter }}</td>
             <td>{{ order.id }}</td>
             <td><img style="height: 50px;" class="rounded-circle" src="{{ order.product.image.url }}" alt=""></td>
-            <td>{{ order.product.name }}</td>
+            {% comment %} <td>{{ order.product.name }}</td> {% endcomment %}
+            <td><a href="{% url 'cart_page' order.product.id %}">{{ order.product.name  }}</a></td>
             {% comment %} <td>{{ order.product.price|currency }}</td> {% endcomment %}
             <td>{{ order.date }}</td>
             {% comment %} <td>{{ order.quantity }}</td> {% endcomment %}

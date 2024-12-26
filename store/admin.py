@@ -40,7 +40,7 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'get_customer_name', 'quantity', 'price', 'date', 'address', 'phone', 'detail', 'status')
+    list_display = ('id','get_customer_name', 'quantity', 'price', 'date', 'address', 'phone', 'detail', 'status')
     search_fields = ('id', 'product__name', 'customer__first_name', 'customer__last_name', 'address', 'phone', 'status')
 
     def get_customer_name(self, obj):

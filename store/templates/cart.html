@@ -29,7 +29,7 @@
             <tr>
               <td>{{ forloop.counter }}</td>
               <td><img style="height: 50px;" class="rounded-circle" src="{{ item.product.image.url }}" alt=""></td>
-              <td>{{ item.product.name }}</td>
+              <td><a href="{% url 'cart_page' item.product.id %}">{{ item.product.name }}</a></td>
               {% comment %} <td>{{ item.product.price | currency }}</td> {% endcomment %}
               {% comment %} <td>{{ item.quantity }}</td> {% endcomment %}
         
