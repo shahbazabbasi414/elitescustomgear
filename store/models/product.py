@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 from .category import Category
 from .material import Material
 from .size import Size
@@ -23,15 +24,25 @@ class Product(models.Model):
     gsms = models.ManyToManyField(GSM, blank=True)
     chosequantitys = models.ManyToManyField(Chosequantity, blank=True)
     
-    description = models.TextField(default='', blank=True)
+    description = RichTextField(default='', null=True, blank=True)
     image = models.ImageField(upload_to='products/')
     image2 = models.ImageField(upload_to='products/', null=True, blank=True)
     image3 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image4 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image5 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image6 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image7 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image8 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image9 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image10 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image11 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image12 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image13 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image14 = models.ImageField(upload_to='products/', null=True, blank=True)
+    image15 = models.ImageField(upload_to='products/', null=True, blank=True)
     
     def __str__(self):
         return self.name 
-    def __str__(self):
-        return self.description
     
     @staticmethod
     def get_Products_by_id(ids):
@@ -41,11 +52,9 @@ class Product(models.Model):
     def get_all_products():
         return Product.objects.all()
     
-    
     @staticmethod
     def get_all_products_by_id(category_id):
         if category_id:
             return Product.objects.filter(category = category_id)
         else:
             return Product.objects.all()
-        

@@ -28,7 +28,7 @@
             {% for item in cart_items %}
             <tr>
               <td>{{ forloop.counter }}</td>
-              <td><img style="height: 50px;" class="rounded-circle" src="{{ item.product.image.url }}" alt=""></td>
+              <td><img style="height: 50px;" {% comment %} class="rounded-circle"{% endcomment %} src="{{ item.product.image.url }}" alt=""></td>
               <td><a href="{% url 'cart_page' item.product.id %}">{{ item.product.name }}</a></td>
               {% comment %} <td>{{ item.product.price | currency }}</td> {% endcomment %}
               {% comment %} <td>{{ item.quantity }}</td> {% endcomment %}
@@ -53,20 +53,22 @@
               <!-- Action column for deleting the specific item -->
               <td>
                 <form method="POST" action="{% url 'update_cart' %}">
-                  {% csrf_token %}
-                  <input type="hidden" name="product" value="{{ item.product.id }}">
-                  <input type="hidden" name="remove" value="true">
-                  <input type="hidden" name="color" value="{{ item.color }}">
-                  <input type="hidden" name="fabric" value="{{ item.fabric }}">
-                  <input type="hidden" name="material" value="{{ item.material }}">
-                  <input type="hidden" name="size" value="{{ item.size }}">
-                  <input type="hidden" name="customization" value="{{ item.customization }}">
-                  <input type="hidden" name="type" value="{{ item.type }}">
-                  <input type="hidden" name="gsm" value="{{ item.gsm }}">
-                  <input type="hidden" name="chosequantity" value="{{ item.chosequantity }}">
-                  <button type="submit" class="btn btn-danger">Remove</button>
+                    {% csrf_token %}
+                    <input type="hidden" name="product" value="{{ item.product.id }}">
+                    <input type="hidden" name="remove" value="true">
+                    <input type="hidden" name="color" value="{{ item.color }}">
+                    <input type="hidden" name="fabric" value="{{ item.fabric }}">
+                    <input type="hidden" name="material" value="{{ item.material }}">
+                    <input type="hidden" name="size" value="{{ item.size }}">
+                    <input type="hidden" name="customization" value="{{ item.customization }}">
+                    <input type="hidden" name="type" value="{{ item.type }}">
+                    <input type="hidden" name="gsm" value="{{ item.gsm }}">
+                    <input type="hidden" name="chosequantity" value="{{ item.chosequantity }}">
+                    <button type="submit" class="btn btn-danger">Remove</button>
                 </form>
-              </td>
+                <br>
+                <a href="{% url 'cart_page' item.product.id %}?edit=true&color={{ item.color }}&fabric={{ item.fabric }}&material={{ item.material }}&size={{ item.size }}&customization={{ item.customization }}&type={{ item.type }}&gsm={{ item.gsm }}&chosequantity={{ item.chosequantity }}" class="btn btn-primary">Update</a>
+            </td>
             </tr>
             {% endfor %}
           {% else %}
@@ -127,9 +129,17 @@
                 <input type="tel" name="phone" id="phone" class="form-control" pattern="[0-9]*" maxlength="11">
             </div>
             
+            <style>
+              textarea::placeholder {
+                color: #999; 
+                font-style: italic; 
+                opacity: 0.8; 
+              }
+            </style>
+            
             <div class="mb-3">
-                <label for="detail" class="form-label">Detail <span class="text-danger">*</span></label>
-                <textarea name="detail" id="detail" class="form-control" rows="4" required></textarea>
+              <label for="detail" class="form-label">Detail <span class="text-danger">*</span></label>
+              <textarea name="detail" id="detail" class="form-control" rows="4" placeholder="500 Word Limit" required></textarea>
             </div>
 
             <!-- Include hidden fields for product attributes -->

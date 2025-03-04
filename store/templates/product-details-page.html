@@ -4,12 +4,91 @@
 {% load custom_filters %}
 
 {% block content %}
+<style>
+    /* Custom CSS for image sizes */
+    .carousel-item img {
+        width: 400px; 
+        height: auto; 
+    }
+
+    .img-thumbnail {
+        width: 200px; 
+        height: auto; 
+        cursor: pointer; 
+    }
+
+    /* Hide the customization options initially */
+    #customization-options {
+        display: none;
+        margin-top: 10px;
+    }
+
+    /* Style for the customization dropdown */
+    .customization-dropdown {
+        cursor: pointer;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .customization-dropdown:hover {
+        background-color: #e9e9e9;
+    }
+
+    /* Disable the Add to Cart button by default */
+    #add-to-cart-btn {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    /* Enable the Add to Cart button when all options are selected */
+    #add-to-cart-btn.enabled {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    #customization-options {
+        display: none;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        background-color: white;
+    }
+    
+    .customization-option {
+        margin: 5px 0;
+    }
+    
+    .customization-option input[type="radio"] {
+        margin-right: 10px;
+    }
+    
+    .customization-dropdown {
+        cursor: pointer;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .customization-dropdown:hover {
+        background-color: #e9e9e9;
+    }
+</style>
+
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6">
                 <div id="productImageCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="{{ product.image.url }}" alt="{{ product.name }}" />
+                        </div>
                         <div class="carousel-item active">
                             <img class="d-block w-100" src="{{ product.image.url }}" alt="{{ product.name }}" />
                         </div>
@@ -23,6 +102,67 @@
                             <img class="d-block w-100" src="{{ product.image3.url }}" alt="{{ product.name }}" />
                         </div>
                         {% endif %}
+                        <!-- Continue this pattern up to image15 -->
+                        {% if product.image4 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image4.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image5 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image5.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image6 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image6.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image7 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image7.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image8 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image8.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image9 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image9.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image10 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image10.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image11 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image11.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image12 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image12.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image13 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image13.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image14 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image14.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
+                        {% if product.image15 %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ product.image15.url }}" alt="{{ product.name }}" />
+                        </div>
+                        {% endif %}
                     </div>
                     <a class="carousel-control-prev" href="#productImageCarousel" role="button" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -32,6 +172,84 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </a>
+                </div>
+
+                <!-- Thumbnail Gallery -->
+                <div class="row mt-3">
+                    <div class="col-3">
+                        <img src="{{ product.image.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image.url }}')" />
+                    </div>
+                    {% if product.image2 %}
+                    <div class="col-3">
+                        <img src="{{ product.image2.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image2.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image3 %}
+                    <div class="col-3">
+                        <img src="{{ product.image3.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image3.url }}')" />
+                    </div>
+                    {% endif %}
+                    <!-- Continue this pattern up to image15 -->
+                    {% if product.image4 %}
+                    <div class="col-3">
+                        <img src="{{ product.image4.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image4.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image5 %}
+                    <div class="col-3">
+                        <img src="{{ product.image5.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image5.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image6 %}
+                    <div class="col-3">
+                        <img src="{{ product.image6.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image6.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image7 %}
+                    <div class="col-3">
+                        <img src="{{ product.image7.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image7.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image8 %}
+                    <div class="col-3">
+                        <img src="{{ product.image8.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image8.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image9 %}
+                    <div class="col-3">
+                        <img src="{{ product.image9.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image9.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image10 %}
+                    <div class="col-3">
+                        <img src="{{ product.image10.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image10.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image11 %}
+                    <div class="col-3">
+                        <img src="{{ product.image11.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image11.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image12 %}
+                    <div class="col-3">
+                        <img src="{{ product.image12.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image12.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image13 %}
+                    <div class="col-3">
+                        <img src="{{ product.image13.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image13.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image14 %}
+                    <div class="col-3">
+                        <img src="{{ product.image14.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image14.url }}')" />
+                    </div>
+                    {% endif %}
+                    {% if product.image15 %}
+                    <div class="col-3">
+                        <img src="{{ product.image15.url }}" class="img-thumbnail" alt="{{ product.name }}" onclick="changeImage('{{ product.image15.url }}')" />
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-6">
@@ -102,18 +320,28 @@
                             </select>
                         </div>
                         {% endif %}
+
                     
                         {% if customization %}
                         <div>
-                            <label for="customization-select">Select Customization:</label>
-                            <select name="customization" id="customization-select" onchange="bindData()">
-                                <option value="">--Select Customization--</option>
+                            <div class="customization-dropdown" onclick="toggleCustomizationOptions()">
+                                <label>Select Customization:</label>
+                                <span id="selected-customization-display">--Select Customization--</span>
+                            </div>
+                            <div id="customization-options">
                                 {% for customization_item in customization %}
-                                <option value="{{ customization_item }}">{{ customization_item }}</option>
+                                <div class="customization-option">
+                                    <input type="checkbox" name="customization" 
+                                           id="customization-{{ forloop.counter }}" 
+                                           value="{{ customization_item }}" 
+                                           onchange="updateCustomizationSelection(this)">
+                                    <label for="customization-{{ forloop.counter }}">{{ customization_item }}</label>
+                                </div>
                                 {% endfor %}
-                            </select>
+                            </div>
                         </div>
                         {% endif %}
+
                     
                         {% if type %}
                         <div>
@@ -149,6 +377,7 @@
                         <form action="{% url 'update_cart' %}" method="POST" class="btn-block">
                             {% csrf_token %}
                             <input type="hidden" name="product" value="{{ product.id }}" />
+                            <input type="hidden" name="old_product_key" value="{{ product.id }}-{{ selected_color }}-{{ selected_fabric }}-{{ selected_material }}-{{ selected_size }}-{{ selected_customization }}-{{ selected_type }}-{{ selected_gsm }}-{{ selected_chosequantity }}" />
                             
                             <input type="hidden" name="color" id="hidden-color" />
                             <input type="hidden" name="fabric" id="hidden-fabric" />
@@ -158,19 +387,44 @@
                             <input type="hidden" name="type" id="hidden-type" />
                             <input type="hidden" name="gsm" id="hidden-gsm" />
                             <input type="hidden" name="chosequantity" id="hidden-chosequantity" />
-                        
-                            <input type="submit" class="btn btn-primary w-100" value="Add to Cart" />
+                            
+                            <input type="submit" class="btn btn-primary w-100" value="Update Cart" />
                         </form>
                         {% endif %}
+                        <!-- Inside the form where you select options -->
+{% if edit %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Pre-select the options based on the query parameters
+        document.getElementById('color-select').value = '{{ selected_color }}';
+        document.getElementById('fabric-select').value = '{{ selected_fabric }}';
+        document.getElementById('material-select').value = '{{ selected_material }}';
+        document.getElementById('size-select').value = '{{ selected_size }}';
+        document.getElementById('type-select').value = '{{ selected_type }}';
+        document.getElementById('gsm-select').value = '{{ selected_gsm }}';
+        document.getElementById('chosequantity-select').value = '{{ selected_chosequantity }}';
+        
+        // Pre-select customizations
+        const customizations = '{{ selected_customization }}'.split(', ');
+        customizations.forEach(customization => {
+            const checkbox = document.querySelector(`input[name="customization"][value="${customization}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        });
+        
+        // Update the hidden fields
+        bindData();
+    });
+</script>
+{% endif %}
                     </div>
                 </div>
             </div>
             <div>
                 <h3 class="mt-4 mb-4">Product Detail</h3>
                 <p class="lead">
-                    {% for line in product.description.splitlines %}
-                        <span>{{ line }}</span><br>
-                    {% endfor %}
+                    {{ product.description|safe }}
                 </p>
             </div>
         </div>
@@ -178,26 +432,50 @@
 </section>
 
 <script>
-function bindData() {
-    // Get selected values from dropdowns
-    const selectedColor = document.getElementById('color-select').value;
-    const selectedMaterial = document.getElementById('material-select') ? document.getElementById('material-select').value : '';
-    const selectedFabric = document.getElementById('fabric-select') ? document.getElementById('fabric-select').value : '';
-    const selectedSize = document.getElementById('size-select') ? document.getElementById('size-select').value : '';
-    const selectedCustomization = document.getElementById('customization-select') ? document.getElementById('customization-select').value : '';
-    const selectedType = document.getElementById('type-select') ? document.getElementById('type-select').value : '';
-    const selectedGsm = document.getElementById('gsm-select') ? document.getElementById('gsm-select').value : '';
-    const selectedChosequantity = document.getElementById('chosequantity-select') ? document.getElementById('chosequantity-select').value : '';
+    function bindData() {
+        // Get selected values from dropdowns
+        const selectedColor = document.getElementById('color-select').value;
+        const selectedMaterial = document.getElementById('material-select') ? document.getElementById('material-select').value : '';
+        const selectedFabric = document.getElementById('fabric-select') ? document.getElementById('fabric-select').value : '';
+        const selectedSize = document.getElementById('size-select') ? document.getElementById('size-select').value : '';
+        const selectedType = document.getElementById('type-select') ? document.getElementById('type-select').value : '';
+        const selectedGsm = document.getElementById('gsm-select') ? document.getElementById('gsm-select').value : '';
+        const selectedChosequantity = document.getElementById('chosequantity-select') ? document.getElementById('chosequantity-select').value : '';
+    
+        // Get selected customizations
+        const selectedCustomizations = Array.from(document.querySelectorAll('input[name="customization"]:checked'))
+            .map(checkbox => checkbox.value)
+            .join(', ');
+    
+        // Bind selected values to hidden fields
+        document.getElementById('hidden-color').value = selectedColor;
+        document.getElementById('hidden-fabric').value = selectedFabric;
+        document.getElementById('hidden-material').value = selectedMaterial;
+        document.getElementById('hidden-size').value = selectedSize;
+        document.getElementById('hidden-customization').value = selectedCustomizations;
+        document.getElementById('hidden-type').value = selectedType;
+        document.getElementById('hidden-gsm').value = selectedGsm;
+        document.getElementById('hidden-chosequantity').value = selectedChosequantity;
+    }
+function changeImage(imageUrl) {
+    const mainImage = document.querySelector('#productImageCarousel .carousel-item.active img');
+    mainImage.src = imageUrl;
+}
 
-    // Bind selected values to hidden fields
-    document.getElementById('hidden-color').value = selectedColor;
-    document.getElementById('hidden-fabric').value = selectedFabric;
-    document.getElementById('hidden-material').value = selectedMaterial;
-    document.getElementById('hidden-size').value = selectedSize;
-    document.getElementById('hidden-customization').value = selectedCustomization;
-    document.getElementById('hidden-type').value = selectedType;
-    document.getElementById('hidden-gsm').value = selectedGsm;
-    document.getElementById('hidden-chosequantity').value = selectedChosequantity;
+function toggleCustomizationOptions() {
+    const options = document.getElementById('customization-options');
+    options.style.display = options.style.display === 'block' ? 'none' : 'block';
+}
+
+function updateCustomizationSelection(checkbox) {
+    const selectedCustomizations = Array.from(document.querySelectorAll('input[name="customization"]:checked'))
+        .map(checkbox => checkbox.value)
+        .join(', ');
+
+    document.getElementById('selected-customization-display').textContent = 
+        selectedCustomizations || '--Select Customization--';
+    document.getElementById('hidden-customization').value = selectedCustomizations;
+    bindData();
 }
 </script>
 

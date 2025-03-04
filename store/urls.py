@@ -1,7 +1,12 @@
 from django.urls import path, re_path
 from .views import index, signup, login_view, logout_view, Cart, checkOut, OrderView, products , cartPage, update_cart, cartPage, about, support, contact, fabric, process, customization, delete_cart
+from .views import password_recovery
 from . import views
 from store.views import OrderView
+
+
+
+
 urlpatterns = [
     path('', index.as_view(), name='index'),
     path('signup/', signup, name='signup'),
@@ -23,5 +28,7 @@ urlpatterns = [
     path('support/', support, name='support'),
     path('customization/', customization, name='customization'),
     path('delete-cart/', delete_cart, name='delete_cart'),
+    path('password_recovery/', views.password_recovery, name='password_recovery'),
+    path('reset_password/', views.reset_password, name='reset_password'),
 ]
 

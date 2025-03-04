@@ -8,9 +8,14 @@ class Customer(models.Model):
     phone = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=500)
+    security_question_1 = models.CharField(max_length=255, null=True, blank=True)
+    security_question_2 = models.CharField(max_length=255, null=True, blank=True)
+    security_question_3 = models.CharField(max_length=255, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
+        # Hash the password before saving
+        if not self.pk:  # Only hash the password if it's a new user or the password is being updated
+            self.password = make_password(self.password)
         super(Customer, self).save(*args, **kwargs)
 
     def __str__(self):

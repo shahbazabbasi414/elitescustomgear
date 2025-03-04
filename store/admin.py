@@ -13,6 +13,9 @@ from .models.fabric import Fabric
 from .models.gsm import GSM
 from .models.chosequantity import Chosequantity
 
+from ckeditor.widgets import CKEditorWidget
+from django import forms
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent')
     list_filter = ('parent',)
@@ -20,13 +23,19 @@ class CategoryAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.select_related('parent')
-
+class ProductAdminForm(forms.ModelForm):
+    description = forms.CharField(widget=CKEditorWidget())
+    class Meta:
+        model = Product
+        fields = '__all__'
+        
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'category', 'description', 'image')
-    search_fields = ('name', 'description''chosequantity',)
-    filter_horizontal = ('materials', 'sizes', 'customizations', 'types', 'colors', 'fabrics', 'gsms','chosequantitys',)
-
+    form = ProductAdminForm
+    # list_display = ('name', 'price', 'category', 'description', 'image')
+    list_display = ('name', 'category', 'image')
+    search_fields = ('name', 'description', 'chosequantity',)
+    filter_horizontal = ('materials', 'sizes', 'customizations', 'types', 'colors', 'fabrics', 'gsms', 'chosequantitys',)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -40,14 +49,12 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id','get_customer_name', 'quantity', 'price', 'date', 'address', 'phone', 'detail', 'status')
+    list_display = ('id', 'get_customer_name', 'quantity', 'price', 'date', 'address', 'phone', 'detail', 'status')
     search_fields = ('id', 'product__name', 'customer__first_name', 'customer__last_name', 'address', 'phone', 'status')
 
     def get_customer_name(self, obj):
         return f'{obj.customer.first_name} {obj.customer.last_name}'
     get_customer_name.short_description = 'Customer Name'
-
-
 
 admin.site.register(Contact)
 admin.site.register(Material)

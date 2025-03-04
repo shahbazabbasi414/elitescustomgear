@@ -4,80 +4,142 @@
 {% load static %}
 {% block content %}
 
+<style>
+  .sent-message, .error-message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    display: none; /* Hidden by default */
+  }
 
+  .sent-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
 
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="m-5 contact">
-      <div class="container">
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+</style>
 
-
-        <div class="row mt-5">
-
-          <div class="col-lg-4">
-            <div class="info">
-              <div class="address">
-                <i class="bi bi-geo-alt"></i>
-                <h4>Location:</h4>
-                <p>Slough , Berkshire , United Kingdom</p>
-              </div>
-
-              <div class="email">
-                <i class="bi bi-envelope"></i>
-                <h4>Email:</h4>
-                <p>support@elitescustomgear.com</p>
-              </div>
-              <div class="phone">
-                <a href="https://wa.me/447951200096" target="_blank">
-                    <i class="bi bi-whatsapp"></i>
-                    <h4>Call & Whatsapp:</h4>
-                    <p>+ 44 7951 200096</p>
-                </a>
-            </div>
-            
-
-            </div>
-
+ <!-- ======= Contact Section ======= -->
+ <section id="contact" class="m-5 contact">
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-lg-4">
+        <div class="info">
+          <div class="address">
+            <i class="bi bi-geo-alt"></i>
+            <h4>Location:</h4>
+            <p>Slough , Berkshire , United Kingdom</p>
           </div>
-
-          <div class="col-lg-8 mt-5 mt-lg-0">
-
-            <form method="POST" class="php-email-form">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-                </div>
-                <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-              </div>
-              <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
-              </div>
-            
-              <!-- Message section -->
-              <div class="my-3">
-                {% if message_sent %}
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
-                {% else %}
-                  <div class="error-message">There was an error sending your message. Please try again later.</div>
-                {% endif %}
-              </div>
-            
-              <div class="text-center"><button type="submit">Send Message</button></div>
-            </form>
-            
-
+          <div class="email">
+            <i class="bi bi-envelope"></i>
+            <h4>Email:</h4>
+            <p>support@elitescustomgear.com</p>
           </div>
-
+          <div class="phone">
+            <i class="bi bi-telephone"></i>
+            <h4>Call:</h4>
+            <p>01753 905129</p>
         </div>
-
+          <div class="phone">
+            <a href="https://wa.me/447951200096" target="_blank">
+              <i class="bi bi-whatsapp"></i>
+              <h4>WhatsApp Chat:</h4>
+              <p>+ 44 7951 200096</p>
+            </a>
+          </div> 
+        </div>
       </div>
-    </section><!-- End Contact Section -->
 
+      <div class="col-lg-8 mt-5 mt-lg-0">
+        <form method="POST" class="php-email-form" action="{% url 'contact' %}">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+            </div>
+            <div class="col-md-6 form-group mt-3 mt-md-0">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+          </div>
+          <div class="form-group mt-3">
+            <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+          </div>
+
+          <!-- Message section -->
+          <div class="my-3">
+            <div class="sent-message">Your message has been sent. Thank you!</div>
+            <div class="error-message">There was an error sending your message. Please try again later.</div>
+          </div>
+
+          <div class="text-center"><button type="submit">Send Message</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section><!-- End Contact Section -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.php-email-form');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+
+      // Submit the form using Fetch API
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}', // Include CSRF token for Django
+        },
+      })
+        .then((response) => response.json()) // Parse the JSON response
+        .then((data) => {
+          if (data.status === 'success') {
+            // Show success message using SweetAlert2
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: data.message,
+            });
+            document.querySelector('.sent-message').style.display = 'block';
+            document.querySelector('.error-message').style.display = 'none';
+
+            // Reset the form fields
+            form.reset();
+          } else {
+            // Show error message using SweetAlert2
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: data.message,
+            });
+            document.querySelector('.sent-message').style.display = 'none';
+            document.querySelector('.error-message').style.display = 'block';
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'There was an error sending your message. Please try again later.',
+          });
+          document.querySelector('.sent-message').style.display = 'none';
+          document.querySelector('.error-message').style.display = 'block';
+        });
+    });
+  });
+</script>
 
 {% endblock %}
 

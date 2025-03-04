@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
-from django.contrib.auth.hashers import check_password
+from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from .models.product import Product
 from .models.category import Category
@@ -12,6 +12,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.conf.urls import handler404
 from .models.contact import Contact
+from .models import Customer
+from django.contrib.auth.hashers import make_password, check_password
+from .models import Customer
+
+
 
 
 
@@ -72,9 +77,12 @@ def signup(request):
         email = postData.get('email')
         password = postData.get('password')
         re_password = postData.get('re_password')
+        security_question_1 = postData.get('security_question_1')
+        security_question_2 = postData.get('security_question_2')
+        security_question_3 = postData.get('security_question_3')
 
         # Validate input
-        if not all([first_name, last_name, phone, email, password, re_password]):
+        if not all([first_name, last_name, phone, email, password, re_password, security_question_1, security_question_2, security_question_3]):
             return render(request, 'signup.html', {'All_Required': True})
 
         if password != re_password:
@@ -89,7 +97,10 @@ def signup(request):
             last_name=last_name,
             email=email,
             password=password,
-            phone=phone
+            phone=phone,
+            security_question_1=security_question_1,
+            security_question_2=security_question_2,
+            security_question_3=security_question_3
         )
         customer.save()
         request.session['customer_id'] = customer.id
@@ -108,6 +119,46 @@ def signup(request):
         return render(request, 'signup.html', data)
 
 
+
+
+def password_recovery(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        security_question_1 = request.POST.get('security_question_1')
+        security_question_2 = request.POST.get('security_question_2')
+        security_question_3 = request.POST.get('security_question_3')
+
+        customer = Customer.get_customer_by_email(email)
+        if customer:
+            if (customer.security_question_1 == security_question_1 and
+                customer.security_question_2 == security_question_2 and
+                customer.security_question_3 == security_question_3):
+                return render(request, 'reset_password.html', {'email': email})
+            else:
+                return render(request, 'password_recovery.html', {'security_mismatch': True})
+        else:
+            return render(request, 'password_recovery.html', {'email_not_found': True})
+    else:
+        return render(request, 'password_recovery.html')
+
+def reset_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if new_password == confirm_password:
+            customer = Customer.get_customer_by_email(email)
+            if customer:
+                customer.password = make_password(new_password)
+                customer.save()
+                return redirect('login')
+        else:
+            return render(request, 'reset_password.html', {'password_mismatch': True, 'email': email})
+    else:
+        return redirect('password_recovery')
+
+
 def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -118,11 +169,11 @@ def login_view(request):
         error_message = None
 
         if customer:
+            # Check the hashed password
             if check_password(password, customer.password):
                 request.session['customer_id'] = customer.id 
                 request.session['email'] = email 
                 return redirect(return_url)
-            
             else:
                 error_message = 'Wrong Email or Password'
                 return render(request, 'login.html', {'error_message': True, 'return_url': return_url})  
@@ -138,7 +189,8 @@ def login_view(request):
         return render(request, 'login.html', {
             'Categories': parent_categories,
             'return_url': return_url
-            })
+        })
+
 
 
 def logout_view(request):
@@ -325,9 +377,9 @@ def cartPage(request, product_id):
     customizations = product.customizations.all()
     types = product.types.all()
     colors = product.colors.all()
-    fabrics=product.fabrics.all()
+    fabrics = product.fabrics.all()
     gsms = product.gsms.all()
-    chosequantitys=product.chosequantitys.all()
+    chosequantitys = product.chosequantitys.all()
     
     cart = request.session.get('cart', {})
     categories = Category.get_all_category()
@@ -336,23 +388,57 @@ def cartPage(request, product_id):
     if 'customer_id' in request.session:
         customer = Customer.objects.filter(id=request.session['customer_id']).first()
     
+    # Check if the request is for editing a cart item
+    edit = request.GET.get('edit', False)
+    if edit:
+        color = request.GET.get('color', '')
+        fabric = request.GET.get('fabric', '')
+        material = request.GET.get('material', '')
+        size = request.GET.get('size', '')
+        customization = request.GET.get('customization', '')
+        product_type = request.GET.get('type', '')
+        gsm = request.GET.get('gsm', '')
+        chosequantity = request.GET.get('chosequantity', '')
+        
+        # Pass the current options to the template
+        return render(request, 'product-details-page.html', {
+            'product': product,
+            'cart': cart,
+            'Categories': parent_categories,
+            'Customer': customer,
+            'color': colors,
+            'fabric': fabrics,
+            'material': materials,
+            'size': sizes,
+            'customization': customizations,
+            'type': types,
+            'gsms': gsms,
+            'chosequantity': chosequantitys,
+            'edit': True,
+            'selected_color': color,
+            'selected_fabric': fabric,
+            'selected_material': material,
+            'selected_size': size,
+            'selected_customization': customization,
+            'selected_type': product_type,
+            'selected_gsm': gsm,
+            'selected_chosequantity': chosequantity,
+        })
+    
     return render(request, 'product-details-page.html', {
         'product': product,
         'cart': cart,
         'Categories': parent_categories,
         'Customer': customer,
-        'color':colors,
-        'fabric':fabrics,
-        'material':materials,
-        'size':sizes,
-        'customization':customizations,
-        'type':types,
-        'gsms':gsms,
-        'chosequantity':chosequantitys
-        
+        'color': colors,
+        'fabric': fabrics,
+        'material': materials,
+        'size': sizes,
+        'customization': customizations,
+        'type': types,
+        'gsms': gsms,
+        'chosequantity': chosequantitys,
     })
-
-
 
 
 def update_cart(request):
@@ -378,7 +464,6 @@ def update_cart(request):
         gsm = request.POST.get('gsm')
         chosequantity = request.POST.get('chosequantity')
 
-
         # Build a key to store product with options
         product_key = f"{product_id}-{color or ''}-{fabric or ''}-{material or ''}-{size or ''}-{customization or ''}-{product_type or ''}-{gsm or ''}-{chosequantity or ''}"
 
@@ -387,6 +472,11 @@ def update_cart(request):
             if product_key in cart:
                 del cart[product_key]
         else:
+            # If editing, remove the old item and add the new one
+            old_product_key = request.POST.get('old_product_key')
+            if old_product_key and old_product_key in cart:
+                del cart[old_product_key]
+            
             if product_key in cart:
                 cart[product_key] += 1
             else:
@@ -399,8 +489,6 @@ def update_cart(request):
         return redirect(request.META.get('HTTP_REFERER', '/'))
     
     return HttpResponseBadRequest("Invalid request method")
-
-    
 
 def about(request):
     categories = Category.get_all_category()
@@ -481,23 +569,32 @@ def fabric(request):
     }
 
     return render(request, 'fabric.html', context)
-
+@csrf_exempt  # Temporarily disable CSRF for testing (remove in production)
 def contact(request):
-    if request.method=='POST':
-        contact = Contact()
-        name=request.POST.get('name')
-        email=request.POST.get('email')
-        subject=request.POST.get('subject')
-        message=request.POST.get('message')
-        contact = Contact(name=name, email=email, subject=subject, message=message)
-        contact.save()
-        return redirect('contact')
-    
+    if request.method == 'POST':
+        try:
+            # Get form data
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            subject = request.POST.get('subject')
+            message = request.POST.get('message')
+
+            # Save to database
+            contact = Contact(name=name, email=email, subject=subject, message=message)
+            contact.save()
+
+            # Return success response
+            return JsonResponse({'status': 'success', 'message': 'Your message has been sent. Thank you!'})
+        except Exception as e:
+            # Return error response
+            return JsonResponse({'status': 'error', 'message': 'There was an error sending your message. Please try again later.'}, status=500)
+
+    # If it's a GET request, render the contact page
     categories = Category.get_all_category()
     parent_categories = categories.filter(parent__isnull=True)
     context = {
         'Categories': parent_categories,
-        'products': products,
+        'products': products,  # Ensure 'products' is defined
     }
     return render(request, 'contact.html', context)
 
